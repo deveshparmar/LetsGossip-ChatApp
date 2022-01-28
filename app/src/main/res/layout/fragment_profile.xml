@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/light_background"
+    tools:context=".fragment.ProfileFragment">
+
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+       <TextView
+           android:id="@+id/tv_msg"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_centerHorizontal="true"
+           android:layout_marginTop="20dp"
+           android:fontFamily="@font/ubuntumono_b"
+           android:text="Profile"
+           android:textColor="@color/text_color"
+           android:textSize="30sp"/>
+
+       <de.hdodenhof.circleimageview.CircleImageView
+           android:id="@+id/profileImg"
+           android:layout_width="150dp"
+           android:layout_height="150dp"
+           android:layout_below="@id/tv_msg"
+           android:layout_centerHorizontal="true"
+           android:elevation="10dp"
+           android:layout_marginTop="20dp"
+           android:src="@drawable/user" />
+
+       <androidx.cardview.widget.CardView
+           android:id="@+id/cv"
+           android:layout_width="match_parent"
+           android:layout_height="220dp"
+           android:layout_below="@id/tv_msg"
+           android:layout_marginTop="100dp"
+           android:layout_marginStart="30dp"
+           android:layout_marginEnd="30dp"
+           app:cardCornerRadius="20dp"
+           app:cardBackgroundColor="@color/white"
+           app:cardElevation="5dp">
+           <RelativeLayout
+               android:layout_width="match_parent"
+               android:layout_height="match_parent">
+
+               <TextView
+                   android:id="@+id/tv_name"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_centerHorizontal="true"
+                   android:layout_marginTop="90dp"
+                   android:fontFamily="@font/ubuntumono_b"
+                   android:text="James Morgan"
+                   android:textColor="@color/text_color"
+                   android:textSize="30sp"/>
+               <TextView
+                   android:id="@+id/tv_phone"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_centerHorizontal="true"
+                   android:layout_below="@id/tv_name"
+                   android:layout_marginTop="10dp"
+                   android:fontFamily="@font/ubuntu_l"
+                   android:text="+918511280104"
+                   android:textColor="@color/text_color"
+                   android:textSize="18sp"/>
+
+               <TextView
+                   android:id="@+id/tv_bio"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_centerHorizontal="true"
+                   android:layout_below="@id/tv_phone"
+                   android:layout_marginTop="20dp"
+                   android:fontFamily="@font/ubuntu_m"
+                   android:text="Hustle!"
+                   android:textColor="@color/text_color"
+                   android:textSize="20sp"/>
+
+
+           </RelativeLayout>
+
+       </androidx.cardview.widget.CardView>
+
+       <soup.neumorphism.NeumorphButton
+           android:id="@+id/bttn_settings"
+           android:layout_width="200dp"
+           android:layout_height="80dp"
+           android:text="Settings"
+           android:layout_centerHorizontal="true"
+           android:layout_below="@id/cv"
+           style="@style/Widget.Neumorph.Button"
+           android:layout_marginStart="30dp"
+           android:layout_marginTop="15dp"
+           android:layout_marginEnd="30dp"
+           android:textColor="@color/text_color" />
+
+       <soup.neumorphism.NeumorphButton
+           android:id="@+id/bttn_update"
+           style="@style/Widget.Neumorph.Button"
+           android:layout_width="200dp"
+           android:layout_height="80dp"
+           android:layout_below="@id/bttn_settings"
+           android:layout_centerHorizontal="true"
+           android:layout_marginStart="30dp"
+           android:layout_marginTop="15dp"
+           android:layout_marginEnd="30dp"
+           android:text="Update Profile"
+           android:textColor="@color/text_color" />
+       <soup.neumorphism.NeumorphButton
+           android:id="@+id/bttn_invite"
+           android:layout_width="200dp"
+           android:layout_centerHorizontal="true"
+           android:layout_height="80dp"
+           android:text="Invite a friend"
+           android:layout_below="@id/bttn_update"
+           style="@style/Widget.Neumorph.Button"
+           android:layout_marginStart="30dp"
+           android:layout_marginTop="15dp"
+           android:layout_marginEnd="30dp"
+           android:textColor="@color/text_color" />
+
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="Made with ❤ by Devesh"
+           android:textSize="14sp"
+           android:layout_alignParentBottom="true"
+           android:layout_centerHorizontal="true"
+           android:layout_marginBottom="20dp"
+           android:textColor="@color/black"
+           android:fontFamily="@font/ubuntu_b"/>
+
+   </RelativeLayout>
+
+</FrameLayout>
+</layout>

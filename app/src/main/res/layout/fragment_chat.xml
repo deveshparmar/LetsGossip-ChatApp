@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<FrameLayout
+    android:layout_width="match_parent"
+    android:background="@color/light_background"
+    android:layout_height="match_parent"
+    tools:context=".fragment.ChatFragment">
+
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+      <com.github.ybq.android.spinkit.SpinKitView
+          android:id="@+id/pb"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+         app:SpinKit_Color="@color/text_color"
+         app:SpinKit_Style="Circle"
+         android:layout_centerInParent="true"/>
+
+      <TextView
+          android:id="@+id/tv_msg"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerHorizontal="true"
+          android:layout_marginTop="20dp"
+          android:fontFamily="@font/ubuntumono_b"
+          android:text="Messages"
+          android:textColor="@color/text_color"
+          android:textSize="30sp"/>
+
+      <soup.neumorphism.NeumorphCardView
+          android:id="@+id/cv"
+          style="@style/Widget.Neumorph.CardView"
+          android:layout_width="match_parent"
+          android:layout_height="80dp"
+          android:layout_below="@id/tv_msg"
+          android:layout_marginStart="10dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginEnd="10dp"
+          app:neumorph_shapeType="pressed">
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/ic_baseline_search_24"
+                android:layout_gravity="center"/>
+
+            <EditText
+                android:id="@+id/et_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/nobackground"
+                android:fontFamily="@font/ubuntu_r"
+                android:hint="Search here"
+                android:inputType="textPersonName"
+                android:paddingStart="15dp"
+                android:layout_weight="1"
+                android:paddingEnd="15dp"
+                android:textCursorDrawable="@drawable/cursor" />
+
+         </LinearLayout>
+      </soup.neumorphism.NeumorphCardView>
+
+      <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/rv_recentChat"
+          app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_below="@id/cv" />
+
+      <com.google.android.material.floatingactionbutton.FloatingActionButton
+          android:id="@+id/fab_contact"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+         android:layout_alignParentBottom="true"
+         android:layout_margin="20dp"
+          app:tint="@color/white"
+          app:backgroundTint="@color/text_color"
+          android:layout_alignParentEnd="true"
+         android:src="@drawable/ic_baseline_search_24"/>
+
+   </RelativeLayout>
+
+</FrameLayout>
+</layout>

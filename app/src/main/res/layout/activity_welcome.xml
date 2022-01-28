@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_background"
+    tools:context=".activities.WelcomeActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <soup.neumorphism.NeumorphCardView
+        style="@style/Widget.Neumorph.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_margin="15dp"
+        app:neumorph_backgroundColor="@color/light_background"
+        app:neumorph_strokeColor="@color/light_background"
+        app:neumorph_shapeType="flat">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Welcome to Lets Gossip"
+        android:textColor="@color/text_color"
+        android:textSize="25sp"
+        android:textStyle="bold"/>
+    </soup.neumorphism.NeumorphCardView>
+    <soup.neumorphism.NeumorphImageView
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:padding="40dp"
+        android:layout_margin="50dp"
+        android:src="@drawable/ic_logo"/>
+    <TextView
+        android:id="@+id/policy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:textColor="@color/text_color"
+        android:text="@string/policy"/>
+    <soup.neumorphism.NeumorphButton
+        android:id="@+id/bttn_agree"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:text="Agree and Continue"
+        style="@style/Widget.Neumorph.Button"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
+        android:textColor="@color/text_color" />
+    </LinearLayout>
+
+</RelativeLayout>
+</layout>

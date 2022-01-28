@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "732694926246",
+    "project_id": "lets-gossip-36480",
+    "storage_bucket": "lets-gossip-36480.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:732694926246:android:b52e236767f2441c6c7567",
+        "android_client_info": {
+          "package_name": "com.codewithdevesh.letsgossip"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "732694926246-qte9j79s4qu6drsnlc8teimf3hir8ch8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJynzk-fwt-vGD6dIfEpD1C88h7FGmoik"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "732694926246-qte9j79s4qu6drsnlc8teimf3hir8ch8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

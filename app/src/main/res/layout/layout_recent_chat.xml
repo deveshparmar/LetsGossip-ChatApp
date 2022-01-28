@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:layout_margin="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="10dp"
+    app:cardBackgroundColor="#add6e6"
+    app:cardElevation="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profImgResent"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/user" />
+        <TextView
+            android:id="@+id/recent_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12 Jan"
+            android:fontFamily="@font/ubuntu_l"
+            android:textSize="16sp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/text_color"
+            android:layout_alignParentEnd="true"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@id/profImgResent"
+            android:layout_marginStart="20dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/nameRecent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="James Morgan"
+                android:textColor="@color/text_color"
+                android:fontFamily="@font/ubuntu_b"
+                android:textSize="24sp"/>
+
+            <TextView
+                android:id="@+id/recentMsg"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="What are you doing?"
+                android:textColor="@color/text_color"
+                android:fontFamily="@font/ubuntu_r"
+                android:textSize="17sp"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

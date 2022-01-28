@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.StatusFragment"
+    android:background="@color/light_background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/ubuntumono_b"
+        android:text="Status"
+        android:textColor="@color/text_color"
+        android:textSize="30sp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_status"
+            android:layout_below="@id/tv_msg"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="20dp"
+            app:tint="@color/white"
+            app:backgroundTint="@color/text_color"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_baseline_search_24"/>
+
+    </RelativeLayout>
+
+</FrameLayout>
+</layout>

@@ -25,6 +25,8 @@ import com.codewithdevesh.letsgossip.databinding.ActivityHomeBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -86,5 +88,28 @@ import java.io.IOException;
      protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
          super.onActivityResult(requestCode, resultCode, data);
 
+     }
+     private void getConnectionStatus(String status){
+         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("UserStatus").child(SessionManagement.getUserPhoneNo());
+         reference.child("status").setValue(status);
+
+     }
+
+     @Override
+     protected void onDestroy() {
+         super.onDestroy();
+         getConnectionStatus("Offline");
+     }
+
+     @Override
+     protected void onPause() {
+         super.onPause();
+         getConnectionStatus("Offline");
+     }
+
+     @Override
+     protected void onResume() {
+         super.onResume();
+         getConnectionStatus("Online");
      }
  }

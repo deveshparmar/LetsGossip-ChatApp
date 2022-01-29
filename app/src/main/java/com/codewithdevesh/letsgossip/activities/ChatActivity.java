@@ -48,6 +48,7 @@ public class ChatActivity extends AppCompatActivity {
     private DatabaseReference reference;
     private ChatAdapter adapter;
     private List<ChatModel>list;
+    private String userCurrentStatus;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +88,7 @@ public class ChatActivity extends AppCompatActivity {
         layoutManager.setStackFromEnd(true);
         binding.rvChat.setLayoutManager(layoutManager);
         readChats();
+        getUserStatus();
     }
 
     private void readChats() {
@@ -198,4 +200,49 @@ public class ChatActivity extends AppCompatActivity {
         finish();
         overridePendingTransition(R.anim.slide_in_left,R.anim.stay);
     }
+
+    private void getConnectionStatus(String status){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("UserStatus").child(SessionManagement.getUserPhoneNo());
+        reference.child("status").setValue(status);
+
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getConnectionStatus("online");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        getConnectionStatus("Offline");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        getConnectionStatus("Offline");
+    }
+    private void getUserStatus(){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("UserStatus").child(receiverId);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String status = snapshot.child("status").getValue(String.class);
+                if(status.equals("online")){
+                    binding.status.setText("Online");
+                    userCurrentStatus="Online";
+                }else{
+                    binding.status.setText("Offline");
+                    userCurrentStatus="Offline";
+
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
 }

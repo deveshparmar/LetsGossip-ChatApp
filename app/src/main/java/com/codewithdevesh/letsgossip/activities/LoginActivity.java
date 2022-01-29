@@ -202,18 +202,18 @@ public class LoginActivity extends AppCompatActivity {
                             reference.child(phoneNo).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    UserModel model = snapshot.getValue(UserModel.class);
-                                    String num = model.getPhoneNo();
-                                    String name = model.getName();
-                                    String bio = model.getBio();
-                                    String pic = model.getPhotoUri();
+                                    if(snapshot.exists()) {
+                                        UserModel model = snapshot.getValue(UserModel.class);
+                                        String num = model.getPhoneNo();
+                                        String name = model.getName();
+                                        String bio = model.getBio();
+                                        String pic = model.getPhotoUri();
 
-                                    SessionManagement.saveUserPhoneNo(num);
-                                    SessionManagement.saveUserName(name);
-                                    SessionManagement.saveUserBio(bio);
-                                    SessionManagement.saveUserPic(pic);
+                                        SessionManagement.saveUserPhoneNo(num);
+                                        SessionManagement.saveUserName(name);
+                                        SessionManagement.saveUserBio(bio);
+                                        SessionManagement.saveUserPic(pic);
 
-                                    if(num.equals(phoneNo)){
                                         startActivity(new Intent(LoginActivity.this,HomeActivity.class));
                                     }else{
                                         startActivity(new Intent(LoginActivity.this,UserInfoActivity.class));

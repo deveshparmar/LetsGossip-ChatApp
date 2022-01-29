@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:padding="5dp"
     android:layout_marginStart="10dp"
+    android:layout_marginEnd="120dp"
     android:gravity="start"
     android:layout_marginBottom="10dp">
 

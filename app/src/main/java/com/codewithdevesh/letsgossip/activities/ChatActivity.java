@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -42,26 +43,36 @@ import java.util.Date;
 import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
-    private String receiverId,receiverName,receiverPic;
+    private String receiverId, receiverName, receiverPic;
     private ActivityChatBinding binding;
     private FirebaseUser firebaseUser;
     private DatabaseReference reference;
     private ChatAdapter adapter;
-    private List<ChatModel>list;
+    private List<ChatModel> list;
+    private String typing;
     private String userCurrentStatus;
+    private Handler handler = new Handler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Utils.setStatusBarColor(this,R.color.light_background);
+        Utils.setStatusBarColor(this, R.color.light_background);
         SessionManagement.init(ChatActivity.this);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference();
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_chat);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_chat);
         Intent i = getIntent();
-        receiverId= i.getStringExtra("userId");
-        receiverName=i.getStringExtra("userName");
-        receiverPic=i.getStringExtra("userProfilePic");
+        receiverId = i.getStringExtra("userId");
+        receiverName = i.getStringExtra("userName");
+        receiverPic = i.getStringExtra("userProfilePic");
         getDetails();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                getTypingStatus();
+                getUserStatus();
+            }
+        });
         binding.etMessage.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -70,10 +81,14 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(TextUtils.isEmpty(binding.etMessage.getText().toString())){
+                if (TextUtils.isEmpty(binding.etMessage.getText().toString()) || binding.etMessage.getText().toString().trim().length() == 0) {
                     binding.fabSend.setEnabled(false);
-                }else{
-                   binding.fabSend.setEnabled(true);
+                    setTypingStatus("not");
+                    typing="not";
+                } else {
+                    binding.fabSend.setEnabled(true);
+                    setTypingStatus("typing...");
+                    typing="typing...";
                 }
             }
 
@@ -84,31 +99,30 @@ public class ChatActivity extends AppCompatActivity {
         });
         listeners();
         list = new ArrayList<>();
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         layoutManager.setStackFromEnd(true);
         binding.rvChat.setLayoutManager(layoutManager);
         readChats();
-        getUserStatus();
     }
 
     private void readChats() {
-        try{
+        try {
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
             DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference("LastMessage");
             reference.child("Chats").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     list.clear();
-                    for(DataSnapshot ds1:snapshot.getChildren()){
+                    for (DataSnapshot ds1 : snapshot.getChildren()) {
                         ChatModel chatModel = ds1.getValue(ChatModel.class);
-                        if(chatModel!=null && chatModel.getSender().equals(SessionManagement.getUserPhoneNo()) && chatModel.getReceiver().equals(receiverId) || chatModel.getReceiver().equals(SessionManagement.getUserPhoneNo()) && chatModel.getSender().equals(receiverId)){
+                        if (chatModel != null && chatModel.getSender().equals(SessionManagement.getUserPhoneNo()) && chatModel.getReceiver().equals(receiverId) || chatModel.getReceiver().equals(SessionManagement.getUserPhoneNo()) && chatModel.getSender().equals(receiverId)) {
                             list.add(chatModel);
                         }
                     }
-                    if(adapter!=null){
+                    if (adapter != null) {
                         adapter.notifyDataSetChanged();
-                    }else{
-                        adapter = new ChatAdapter(list,ChatActivity.this);
+                    } else {
+                        adapter = new ChatAdapter(list, ChatActivity.this);
                         binding.rvChat.setAdapter(adapter);
                     }
                 }
@@ -118,7 +132,7 @@ public class ChatActivity extends AppCompatActivity {
 
                 }
             });
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -128,7 +142,7 @@ public class ChatActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
-                if(!TextUtils.isEmpty(binding.etMessage.getText().toString())){
+                if (!TextUtils.isEmpty(binding.etMessage.getText().toString())) {
                     sendMessage(binding.etMessage.getText().toString());
                 }
                 binding.etMessage.setText("");
@@ -143,10 +157,10 @@ public class ChatActivity extends AppCompatActivity {
         String currentDay = dateFormat.format(date);
 
         Calendar current = Calendar.getInstance();
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat timeFormat  = new SimpleDateFormat("hh:mm a");
-        String currentTime= dateFormat.format(current.getTime());
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
+        String currentTime = dateFormat.format(current.getTime());
 
-        ChatModel model = new ChatModel(SessionManagement.getUserPhoneNo(),receiverId,"TEXT","", msg,currentDay+","+currentTime,false);
+        ChatModel model = new ChatModel(SessionManagement.getUserPhoneNo(), receiverId, "TEXT", "", msg, currentDay + "," + currentTime);
         reference.child("Chats").push().setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
@@ -166,8 +180,8 @@ public class ChatActivity extends AppCompatActivity {
 
         DatabaseReference reference3 = FirebaseDatabase.getInstance().getReference("LastMessage").child(SessionManagement.getUserPhoneNo()).child(receiverId);
         reference3.child("Message").setValue(msg);
-         DatabaseReference reference4 = FirebaseDatabase.getInstance().getReference("LastMessage").child(receiverId).child(SessionManagement.getUserPhoneNo());
-         reference4.child("Message").setValue(msg);
+        DatabaseReference reference4 = FirebaseDatabase.getInstance().getReference("LastMessage").child(receiverId).child(SessionManagement.getUserPhoneNo());
+        reference4.child("Message").setValue(msg);
 
 
     }
@@ -176,17 +190,17 @@ public class ChatActivity extends AppCompatActivity {
         binding.toolbarChat.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(ChatActivity.this,HomeActivity.class));
+                startActivity(new Intent(ChatActivity.this, HomeActivity.class));
                 finish();
-                overridePendingTransition(R.anim.slide_in_left,R.anim.stay);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.stay);
             }
         });
-        if(receiverId!=null){
+        if (receiverId != null) {
             binding.name.setText(receiverName);
-            if(receiverPic!=null){
-                if(receiverPic.equals("")){
+            if (receiverPic != null) {
+                if (receiverPic.equals("")) {
                     binding.profImg.setImageResource(R.drawable.camera);
-                }else{
+                } else {
                     Glide.with(this).load(receiverPic).into(binding.profImg);
                 }
             }
@@ -196,20 +210,21 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(ChatActivity.this,HomeActivity.class));
+        startActivity(new Intent(ChatActivity.this, HomeActivity.class));
         finish();
-        overridePendingTransition(R.anim.slide_in_left,R.anim.stay);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.stay);
     }
 
-    private void getConnectionStatus(String status){
+    private void getConnectionStatus(String status) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("UserStatus").child(SessionManagement.getUserPhoneNo());
         reference.child("status").setValue(status);
 
     }
+
     @Override
     protected void onResume() {
         super.onResume();
-        getConnectionStatus("online");
+        getConnectionStatus("Online");
     }
 
     @Override
@@ -223,26 +238,55 @@ public class ChatActivity extends AppCompatActivity {
         super.onDestroy();
         getConnectionStatus("Offline");
     }
-    private void getUserStatus(){
+
+    private void getUserStatus() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("UserStatus").child(receiverId);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String status = snapshot.child("status").getValue(String.class);
-                if(status.equals("online")){
-                    binding.status.setText("Online");
-                    userCurrentStatus="Online";
-                }else{
-                    binding.status.setText("Offline");
-                    userCurrentStatus="Offline";
+                if (snapshot.exists()) {
+                    String status = snapshot.child("status").getValue(String.class);
+                    if (status.equals("Online")) {
+                        binding.status.setText("Online");
+                        userCurrentStatus = "Online";
+                    } else {
+                        binding.status.setText("Offline");
+                        userCurrentStatus = "Offline";
 
+                    }
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
     }
+    private void setTypingStatus(String typing){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        reference.child("Status").child(SessionManagement.getUserPhoneNo()).child("isTyping").setValue(typing);
+    }
+    private void getTypingStatus(){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Status");
+        reference.child(receiverId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    String x = snapshot.child("isTyping").getValue().toString();
+                    if(x.equals("typing...")){
+                       binding.typing.setVisibility(View.VISIBLE);
+                       binding.typing.setText(x);
+                    }else{
+                        binding.typing.setVisibility(View.GONE);
+                    }
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 }

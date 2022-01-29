@@ -7,20 +7,18 @@ public class ChatModel {
     private String url;
     private String textMessage;
     private String dateTime;
-    private Boolean isSeen;
 
 
     public ChatModel() {
     }
 
-    public ChatModel(String sender, String receiver, String type, String url, String textMessage, String dateTime, Boolean isSeen) {
+    public ChatModel(String sender, String receiver, String type, String url, String textMessage, String dateTime) {
         this.sender = sender;
         this.receiver = receiver;
         this.type = type;
         this.url = url;
         this.textMessage = textMessage;
         this.dateTime = dateTime;
-        this.isSeen = isSeen;
     }
 
     public String getSender() {
@@ -61,14 +59,6 @@ public class ChatModel {
 
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
-    }
-
-    public Boolean getSeen() {
-        return isSeen;
-    }
-
-    public void setSeen(Boolean seen) {
-        isSeen = seen;
     }
 
     public String getUrl() {

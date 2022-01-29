@@ -18,7 +18,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-           android:layout_gravity="center"
+            android:layout_gravity="center"
             android:gravity="center">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -56,6 +56,17 @@
 
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
+   <TextView
+       android:visibility="gone"
+       android:id="@+id/typing"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="typing..."
+       android:textColor="@color/text_color"
+       android:textSize="15sp"
+       android:layout_centerHorizontal="true"
+       android:fontFamily="@font/ubuntu_m"
+       android:layout_below="@id/toolbar_chat"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_chat"

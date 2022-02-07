@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -19,8 +20,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.codewithdevesh.letsgossip.R;
 import com.codewithdevesh.letsgossip.activities.ChatActivity;
+import com.codewithdevesh.letsgossip.model.RecentChatModel;
 import com.codewithdevesh.letsgossip.model.UserModel;
 import com.codewithdevesh.letsgossip.utilities.SessionManagement;
+import com.facebook.shimmer.Shimmer;
+import com.facebook.shimmer.ShimmerDrawable;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
@@ -30,6 +34,7 @@ import com.google.firebase.storage.StorageReference;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -52,14 +57,27 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         View view = LayoutInflater.from(context).inflate(R.layout.layout_contact,parent,false);
         return new ViewHolder(view);
     }
+    public void filterList(ArrayList<UserModel> filterllist) {
+        this.list = filterllist;
+        notifyDataSetChanged();
+    }
 
     @Override
     public void onBindViewHolder(@NonNull ContactAdapter.ViewHolder holder, int position) {
        final UserModel model = list.get(position);
+        Shimmer shimmer = new Shimmer.ColorHighlightBuilder()
+                .setBaseColor(Color.parseColor("#f3f3f3"))
+                .setBaseAlpha(1)
+                .setHighlightColor(Color.parseColor("#cdd7df"))
+                .setHighlightAlpha(1)
+                .setDropoff(50)
+                .build();
        String num = model.getPhoneNo();
        holder.name.setText(model.getName());
        holder.bio.setText(model.getBio());
-       Glide.with(context).load(model.getPhotoUri()).thumbnail(0.1f).into(holder.profilePic);
+        ShimmerDrawable shimmerDrawable = new ShimmerDrawable();
+        shimmerDrawable.setShimmer(shimmer);
+        Glide.with(context).load(model.getPhotoUri()).placeholder(shimmerDrawable).into(holder.profilePic);
 //        FirebaseStorage storage = FirebaseStorage.getInstance();
 //        StorageReference storageReference = storage.getReference();
 //        StorageReference ref = storageReference.child("profileImages/"+ num.toString()+".jpg");

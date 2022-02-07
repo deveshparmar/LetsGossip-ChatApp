@@ -52,5 +52,7 @@ dependencies {
     implementation 'com.github.3llomi:CircularStatusView:V1.0.2'
     implementation 'com.github.shts:StoriesProgressView:3.0.0'
     implementation 'com.github.bxute:StoryView:v1.0'
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+    implementation "com.vanniktech:emoji-google:0.8.0"
 }
 

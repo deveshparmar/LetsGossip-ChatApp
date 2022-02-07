@@ -4,8 +4,8 @@
     android:layout_height="70dp"
     android:layout_margin="5dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="10dp"
-    app:cardBackgroundColor="#add6e6"
+    app:cardCornerRadius="15dp"
+    app:cardBackgroundColor="#cdd7df"
     app:cardElevation="5dp">
 
     <RelativeLayout
@@ -25,16 +25,29 @@
             android:layout_height="wrap_content"
             android:text="12 Jan"
             android:fontFamily="@font/ubuntu_l"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
             android:textColor="@color/text_color"
             android:layout_alignParentEnd="true"/>
+        <TextView
+            android:id="@+id/recent_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="8:00 pm"
+            android:fontFamily="@font/ubuntu_l"
+            android:textSize="14sp"
+            android:layout_below="@id/recent_date"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/text_color"
+            android:layout_alignParentEnd="true"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_toEndOf="@id/profImgResent"
             android:layout_marginStart="20dp"
+            android:layout_toEndOf="@id/profImgResent"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -42,20 +55,21 @@
                 android:id="@+id/nameRecent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_b"
                 android:text="James Morgan"
                 android:textColor="@color/text_color"
-                android:fontFamily="@font/ubuntu_b"
-                android:textSize="24sp"/>
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/recentMsg"
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/ubuntu_r"
                 android:text="What are you doing?"
                 android:textColor="@color/text_color"
-                android:fontFamily="@font/ubuntu_r"
-                android:textSize="17sp"/>
+                android:textSize="15sp" />
         </LinearLayout>
 
     </RelativeLayout>

@@ -57,13 +57,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView textMsg;
+        private TextView textMsg,dateTime;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textMsg = itemView.findViewById(R.id.tv_message);
+            dateTime = itemView.findViewById(R.id.dateTime);
         }
         void bind(ChatModel chats){
             textMsg.setText(chats.getTextMessage());
+            dateTime.setText(chats.getDateTime());
         }
     }
     @Override

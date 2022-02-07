@@ -72,7 +72,8 @@ public class ContactActivity extends AppCompatActivity {
 
                     if(model.getPhoneNo()!=null && !model.getPhoneNo().equals(SessionManagement.getUserPhoneNo())){
                         if(mobileContactList.contains(model.getPhoneNo())){
-                            binding.pb.setVisibility(View.GONE);
+                            binding.shimmerLayoutC.stopShimmer();
+                            binding.shimmerLayoutC.setVisibility(View.GONE);
                             list.add(model);
                         }
                     }

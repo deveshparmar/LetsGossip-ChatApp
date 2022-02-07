@@ -9,17 +9,22 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.codewithdevesh.letsgossip.R;
 import com.codewithdevesh.letsgossip.activities.ContactActivity;
 import com.codewithdevesh.letsgossip.adapter.ChatListAdapter;
+import com.codewithdevesh.letsgossip.adapter.RecentChatAdapter;
 import com.codewithdevesh.letsgossip.databinding.FragmentChatBinding;
 import com.codewithdevesh.letsgossip.model.ChatListModel;
+import com.codewithdevesh.letsgossip.model.RecentChatModel;
 import com.codewithdevesh.letsgossip.model.UserModel;
 import com.codewithdevesh.letsgossip.utilities.SessionManagement;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -34,13 +39,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class ChatFragment extends Fragment {
     private FragmentChatBinding binding;
-    private List<ChatListModel> list;
-    private ArrayList<String> allUserId;
-    private ChatListAdapter adapter;
+    private List<RecentChatModel> list;
+    private RecentChatAdapter adapter;
     private FirebaseUser firebaseUser;
     private DatabaseReference reference;
     private Handler handler = new Handler();
@@ -56,15 +61,11 @@ public class ChatFragment extends Fragment {
         // Inflate the layout for this fragment
         binding =  DataBindingUtil.inflate(inflater,R.layout.fragment_chat, container, false);
         SessionManagement.init(getContext());
-        list = new ArrayList<>();
-        allUserId = new ArrayList<>();
-        binding.rvRecentChat.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new ChatListAdapter(list,getContext());
-        binding.rvRecentChat.setAdapter(adapter);
+
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference();
+        list = new ArrayList<>();
         if(firebaseUser!=null) {
-            getChatList();
+           getChatList();
         }
 
         binding.fabContact.setOnClickListener(new View.OnClickListener() {
@@ -73,82 +74,62 @@ public class ChatFragment extends Fragment {
                 startActivity(new Intent(getActivity(), ContactActivity.class));
             }
         });
+        binding.sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                filter(s);
+                return false;
+            }
+        });
         return binding.getRoot();
     }
 
-    private void getChatList() {
-        binding.pb.setVisibility(View.VISIBLE);
-        list.clear();
-        allUserId.clear();
-
-        reference.child("ChatList").child(SessionManagement.getUserPhoneNo()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    String userID = Objects.requireNonNull(snapshot.child("chatId").getValue()).toString();
-                    Log.d("TAG", "onDataChange: userId "+userID);
-
-                    binding.pb.setVisibility(View.GONE);
-                    allUserId.add(userID);
-                }
-                getUserInfo();
+    private void filter(String newText) {
+        ArrayList<RecentChatModel>filterList = new ArrayList<>();
+        for(RecentChatModel model: list){
+            if(model.getName().toLowerCase(Locale.ROOT).contains(newText.toLowerCase(Locale.ROOT))){
+                filterList.add(model);
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-
-        });
+        }
+        if(filterList.isEmpty()){
+            Toast.makeText(getActivity(), "No Data Found..", Toast.LENGTH_SHORT).show();
+        }else{
+            adapter.filterList(filterList);
+        }
     }
 
-    private void getUserInfo() {
-
+    private void getChatList() {
         handler.post(new Runnable() {
             @Override
             public void run() {
-
-                for (String userID : allUserId){
-                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User");
-                    reference.child(userID).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-                        @Override
-                        public void onSuccess(DataSnapshot dataSnapshot) {
-                            UserModel model1 = dataSnapshot.getValue(UserModel.class);
-                            userNo = model1.getPhoneNo();
-                            String userName = model1.getName();
-                            String profilePic = model1.getPhotoUri();
-                            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-                            databaseReference.child("LastMessage").child(SessionManagement.getUserPhoneNo()).child(userID).addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                                        String z = snapshot.child("Message").getValue().toString();
-                                        Log.e("TAG",z);
-                                        message=z;
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
-                            ChatListModel chats = new ChatListModel(userNo, userName, message, "", profilePic);
-                            Log.i("TAG", "onSuccess: "+message);
-                            list.add(chats);
-
-                            if(adapter!=null){
-                                adapter.notifyItemInserted(0);
-                                adapter.notifyDataSetChanged();
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("RecentChat").child(SessionManagement.getUserPhoneNo());
+                reference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()) {
+                            binding.shimmerLayout.stopShimmer();
+                            binding.shimmerLayout.setVisibility(View.GONE);
+                            for (DataSnapshot ds : snapshot.getChildren()) {
+                                RecentChatModel model = ds.getValue(RecentChatModel.class);
+                                list.add(model);
                             }
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
 
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getActivity(), "failed " +e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                adapter = new RecentChatAdapter(list,getActivity());
+                binding.rvRecentChat.setLayoutManager(new LinearLayoutManager(getActivity()));
+                binding.rvRecentChat.setAdapter(adapter);
             }
         });
     }

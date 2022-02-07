@@ -18,6 +18,7 @@
           android:layout_height="wrap_content"
          app:SpinKit_Color="@color/text_color"
          app:SpinKit_Style="Circle"
+          android:visibility="gone"
          android:layout_centerInParent="true"/>
 
       <TextView
@@ -46,20 +47,13 @@
              android:layout_height="match_parent"
              android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginStart="20dp"
-                android:src="@drawable/ic_baseline_search_24"
-                android:layout_gravity="center"/>
-
-            <EditText
-                android:id="@+id/et_name"
+            <SearchView
+                android:id="@+id/sv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/nobackground"
                 android:fontFamily="@font/ubuntu_r"
-                android:hint="Search here"
+                app:queryHint="Search Chats here"
                 android:inputType="textPersonName"
                 android:paddingStart="15dp"
                 android:layout_weight="1"
@@ -75,6 +69,37 @@
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_below="@id/cv" />
+      <com.facebook.shimmer.ShimmerFrameLayout
+          android:layout_below="@id/cv"
+         android:id="@+id/shimmerLayout"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+            android:orientation="vertical"
+           >
+            <include
+               layout="@layout/item_shimmer"/>
+            <include
+                layout="@layout/item_shimmer"/>
+            <include
+                layout="@layout/item_shimmer"/>
+            <include
+                layout="@layout/item_shimmer"/>
+            <include
+                layout="@layout/item_shimmer"/>
+            <include
+                layout="@layout/item_shimmer"/>
+            <include
+                layout="@layout/item_shimmer"/>
+            <include
+                layout="@layout/item_shimmer"/>
+
+
+         </LinearLayout>
+
+      </com.facebook.shimmer.ShimmerFrameLayout>
 
       <com.google.android.material.floatingactionbutton.FloatingActionButton
           android:id="@+id/fab_contact"

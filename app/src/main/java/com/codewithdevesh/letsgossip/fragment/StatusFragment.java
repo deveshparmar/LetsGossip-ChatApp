@@ -10,6 +10,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -21,10 +22,19 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.codewithdevesh.letsgossip.R;
+import com.codewithdevesh.letsgossip.adapter.ChatAdapter;
+import com.codewithdevesh.letsgossip.adapter.RecentChatAdapter;
 import com.codewithdevesh.letsgossip.adapter.StatusAdapter;
 import com.codewithdevesh.letsgossip.databinding.FragmentStatusBinding;
+import com.codewithdevesh.letsgossip.model.ChatModel;
+import com.codewithdevesh.letsgossip.model.RecentChatModel;
 import com.codewithdevesh.letsgossip.model.StatusModel;
 import com.codewithdevesh.letsgossip.utilities.SessionManagement;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -38,9 +48,9 @@ import xute.storyview.StoryModel;
 public class StatusFragment extends Fragment {
 
     private FragmentStatusBinding binding;
-    private List<StoryModel>list;
-    private StatusAdapter adapter;
     int PICK_IMAGE_MULTIPLE = 1;
+    private List<RecentChatModel>list;
+    RecentChatAdapter adapter;
     ArrayList<String>imgList;
     public StatusFragment() {
         // Required empty public constructor
@@ -71,9 +81,6 @@ public class StatusFragment extends Fragment {
 
             }
         });
-        adapter = new StatusAdapter(list,getContext());
-        binding.rvStatus.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.rvStatus.setAdapter(adapter);
         return binding.getRoot();
 
     }

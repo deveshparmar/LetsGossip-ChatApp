@@ -22,6 +22,7 @@ import com.codewithdevesh.letsgossip.R;
 import com.codewithdevesh.letsgossip.adapter.ChatAdapter;
 import com.codewithdevesh.letsgossip.databinding.ActivityChatBinding;
 import com.codewithdevesh.letsgossip.model.ChatModel;
+import com.codewithdevesh.letsgossip.model.RecentChatModel;
 import com.codewithdevesh.letsgossip.security.AES;
 import com.codewithdevesh.letsgossip.utilities.SessionManagement;
 import com.codewithdevesh.letsgossip.utilities.Utils;
@@ -34,6 +35,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.vanniktech.emoji.EmojiManager;
+import com.vanniktech.emoji.EmojiPopup;
+import com.vanniktech.emoji.google.GoogleEmojiProvider;
 
 
 import java.text.SimpleDateFormat;
@@ -103,6 +107,12 @@ public class ChatActivity extends AppCompatActivity {
         layoutManager.setStackFromEnd(true);
         binding.rvChat.setLayoutManager(layoutManager);
         readChats();
+        binding.attach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     private void readChats() {
@@ -158,9 +168,11 @@ public class ChatActivity extends AppCompatActivity {
 
         Calendar current = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
-        String currentTime = dateFormat.format(current.getTime());
+        String currentTime = timeFormat.format(current.getTime());
 
         ChatModel model = new ChatModel(SessionManagement.getUserPhoneNo(), receiverId, "TEXT", "", msg, currentDay + "," + currentTime);
+        RecentChatModel model1 = new RecentChatModel(msg,currentDay,currentTime,receiverName,receiverPic,receiverId);
+        RecentChatModel model2 = new RecentChatModel(msg,currentDay,currentTime,SessionManagement.getUserName(),SessionManagement.getUserPic(),SessionManagement.getUserPhoneNo());
         reference.child("Chats").push().setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
@@ -169,6 +181,38 @@ public class ChatActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+        reference.child("MyChats").child(SessionManagement.getUserPhoneNo()).child(receiverId).push().setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+
+            }
+        });
+
+        DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("RecentChat").child(SessionManagement.getUserPhoneNo()).child(receiverId);
+        ref1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ref1.setValue(model1);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("RecentChat").child(receiverId).child(SessionManagement.getUserPhoneNo());
+        ref2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ref2.setValue(model2);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
@@ -265,11 +309,11 @@ public class ChatActivity extends AppCompatActivity {
     }
     private void setTypingStatus(String typing){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-        reference.child("Status").child(SessionManagement.getUserPhoneNo()).child("isTyping").setValue(typing);
+        reference.child("Status").child(SessionManagement.getUserPhoneNo()).child(receiverId).child("isTyping").setValue(typing);
     }
     private void getTypingStatus(){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Status");
-        reference.child(receiverId).addValueEventListener(new ValueEventListener() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Status").child(receiverId).child(SessionManagement.getUserPhoneNo());
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){

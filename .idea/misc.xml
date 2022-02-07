@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/drawable/circle_sh.xml" value="0.1" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/drawable/cursor.xml" value="0.125" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.2484375" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/drawable/ic_logo.xml" value="0.24427083333333333" />
@@ -11,7 +12,7 @@
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/drawable/rounded.xml" value="0.12864583333333332" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/drawable/send_drawable.xml" value="0.2484375" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/activity_chat.xml" value="0.264" />
-        <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/activity_contact.xml" value="0.23229166666666667" />
+        <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/activity_contact.xml" value="0.2" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/activity_home.xml" value="0.228125" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/activity_main.xml" value="0.264" />
@@ -22,14 +23,15 @@
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/dialog_bottom.xml" value="0.264" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/dialog_otp.xml" value="0.264" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/fragment_call.xml" value="0.3062283737024221" />
-        <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/fragment_chat.xml" value="0.136" />
+        <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/fragment_chat.xml" value="0.264" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/fragment_profile.xml" value="0.264" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/fragment_status.xml" value="0.24561403508771928" />
+        <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/item_shimmer.xml" value="0.228125" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/layout_contact.xml" value="0.264" />
-        <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/layout_recent_chat.xml" value="0.23229166666666667" />
+        <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/layout_recent_chat.xml" value="0.2" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/layout_status.xml" value="0.264" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/receive_layout.xml" value="0.2" />
-        <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/send_layout.xml" value="0.35172413793103446" />
+        <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/send_layout.xml" value="0.264" />
       </map>
     </option>
   </component>

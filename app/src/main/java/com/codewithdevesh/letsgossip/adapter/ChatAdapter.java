@@ -4,11 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.codewithdevesh.letsgossip.R;
 import com.codewithdevesh.letsgossip.model.ChatModel;
 import com.codewithdevesh.letsgossip.utilities.SessionManagement;
@@ -48,7 +50,19 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ChatAdapter.ViewHolder holder, int position) {
-        holder.bind(list.get(position));
+        ChatModel model = list.get(position);
+//        holder.bind(list.get(position));
+        String type = model.getType();
+        if(type.equals("TEXT")){
+            holder.textMsg.setVisibility(View.VISIBLE);
+            holder.imageView.setVisibility(View.GONE);
+            holder.bind(list.get(position));
+        }else if(type.equals("PHOTO")){
+            holder.imageView.setVisibility(View.VISIBLE);
+            holder.textMsg.setVisibility(View.GONE);
+            Glide.with(context).load(model.getUrl()).placeholder(R.drawable.user).into(holder.imageView);
+            holder.dateTime.setText(model.getDateTime());
+        }
     }
 
     @Override
@@ -58,10 +72,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView textMsg,dateTime;
+        private ImageView imageView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textMsg = itemView.findViewById(R.id.tv_message);
             dateTime = itemView.findViewById(R.id.dateTime);
+            imageView = itemView.findViewById(R.id.image);
         }
         void bind(ChatModel chats){
             textMsg.setText(chats.getTextMessage());

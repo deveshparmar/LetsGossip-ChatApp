@@ -104,11 +104,9 @@ public class ChatFragment extends Fragment {
     }
 
     private void getChatList() {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
+                list.clear();
                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference("RecentChat").child(SessionManagement.getUserPhoneNo());
-                reference.addValueEventListener(new ValueEventListener() {
+                reference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.exists()) {
@@ -131,6 +129,4 @@ public class ChatFragment extends Fragment {
                 binding.rvRecentChat.setLayoutManager(new LinearLayoutManager(getActivity()));
                 binding.rvRecentChat.setAdapter(adapter);
             }
-        });
-    }
 }

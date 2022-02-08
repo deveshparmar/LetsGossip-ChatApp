@@ -39,10 +39,10 @@
         android:id="@+id/dateTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_message"
         android:layout_alignEnd="@id/tv_message"
         android:fontFamily="@font/ubuntu_m"
         android:gravity="end"
+        android:layout_alignParentBottom="true"
         android:text="12 january 2015"
         android:textColor="@color/text_color"
         android:textSize="12sp" />

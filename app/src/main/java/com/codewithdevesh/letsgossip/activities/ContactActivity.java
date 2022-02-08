@@ -13,10 +13,13 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.codewithdevesh.letsgossip.R;
 import com.codewithdevesh.letsgossip.adapter.ContactAdapter;
 import com.codewithdevesh.letsgossip.databinding.ActivityContactBinding;
+import com.codewithdevesh.letsgossip.model.RecentChatModel;
 import com.codewithdevesh.letsgossip.model.UserModel;
 import com.codewithdevesh.letsgossip.utilities.SessionManagement;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,6 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ContactActivity extends AppCompatActivity {
     private ActivityContactBinding binding;
@@ -58,6 +62,18 @@ public class ContactActivity extends AppCompatActivity {
         if(mobileContactList!=null){
             getContactList();
         }
+        binding.sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                filter(s);
+                return false;
+            }
+        });
 
     }
 
@@ -172,6 +188,19 @@ public class ContactActivity extends AppCompatActivity {
             }
         }
         return phoneList;
+    }
+    private void filter(String newText) {
+        ArrayList<UserModel>filterList = new ArrayList<>();
+        for(UserModel model: list){
+            if(model.getName().toLowerCase(Locale.ROOT).contains(newText.toLowerCase(Locale.ROOT))){
+                filterList.add(model);
+            }
+        }
+        if(filterList.isEmpty()){
+            Toast.makeText(this, "No Data Found..", Toast.LENGTH_SHORT).show();
+        }else{
+            adapter.filterList(filterList);
+        }
     }
 
 }

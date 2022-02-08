@@ -203,12 +203,7 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
-        reference.child("MyChats").child(SessionManagement.getUserPhoneNo()).child(receiverId).push().setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
 
-            }
-        });
 
         DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("RecentChat").child(SessionManagement.getUserPhoneNo()).child(receiverId);
         ref1.addValueEventListener(new ValueEventListener() {

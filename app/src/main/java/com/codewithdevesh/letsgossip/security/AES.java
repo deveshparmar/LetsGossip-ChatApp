@@ -29,7 +29,6 @@ public class AES {
             e.printStackTrace();
         }
     }
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public static String encrypt(String strToEncrypt, String secret)
     {
         try
@@ -45,7 +44,6 @@ public class AES {
         }
         return null;
     }
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public static String decrypt(String strToDecrypt, String secret)
     {
         try

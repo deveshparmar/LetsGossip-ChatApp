@@ -11,24 +11,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.codewithdevesh.letsgossip.R;
 import com.codewithdevesh.letsgossip.activities.ContactActivity;
-import com.codewithdevesh.letsgossip.adapter.ChatListAdapter;
 import com.codewithdevesh.letsgossip.adapter.RecentChatAdapter;
 import com.codewithdevesh.letsgossip.databinding.FragmentChatBinding;
-import com.codewithdevesh.letsgossip.model.ChatListModel;
 import com.codewithdevesh.letsgossip.model.RecentChatModel;
-import com.codewithdevesh.letsgossip.model.UserModel;
 import com.codewithdevesh.letsgossip.utilities.SessionManagement;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -40,7 +32,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 public class ChatFragment extends Fragment {
     private FragmentChatBinding binding;
@@ -52,7 +43,7 @@ public class ChatFragment extends Fragment {
     private String userNo;
     private String message;
     public ChatFragment() {
-        // Required empty public constructor
+
     }
 
     @Override
@@ -74,16 +65,20 @@ public class ChatFragment extends Fragment {
                 startActivity(new Intent(getActivity(), ContactActivity.class));
             }
         });
-        binding.sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        binding.etSearchview.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
             }
 
             @Override
-            public boolean onQueryTextChange(String s) {
-                filter(s);
-                return false;
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            filter(editable.toString());
             }
         });
         return binding.getRoot();
@@ -97,7 +92,9 @@ public class ChatFragment extends Fragment {
             }
         }
         if(filterList.isEmpty()){
-            Toast.makeText(getActivity(), "No Data Found..", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getActivity(), "No Data Found..", Toast.LENGTH_SHORT).show();
+            binding.shimmerLayout.stopShimmer();
+            binding.shimmerLayout.setVisibility(View.GONE);
         }else{
             adapter.filterList(filterList);
         }
@@ -105,8 +102,8 @@ public class ChatFragment extends Fragment {
 
     private void getChatList() {
                 list.clear();
-                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("RecentChat").child(SessionManagement.getUserPhoneNo());
-                reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("RecentChat").child(SessionManagement.getUserId());
+                reference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.exists()) {
@@ -117,6 +114,11 @@ public class ChatFragment extends Fragment {
                                 list.add(model);
                             }
                             adapter.notifyDataSetChanged();
+                        }
+                        else{
+                            binding.shimmerLayout.stopShimmer();
+                            binding.shimmerLayout.setVisibility(View.GONE);
+                            binding.tvOops.setVisibility(View.VISIBLE);
                         }
                     }
 

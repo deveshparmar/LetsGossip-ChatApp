@@ -102,6 +102,13 @@ public class UpdateProfileActivity extends AppCompatActivity {
             }
         });
 
+        binding.tb.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
     }
     private void uploadImage(){
         if(picUri!=null){
@@ -109,7 +116,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
                     = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
-            StorageReference ref = storageReference.child("profileImages/"+SessionManagement.getUserPhoneNo().toString()+".jpg");
+            StorageReference ref = storageReference.child("profileImages/"+SessionManagement.getUserId().toString()+".jpg");
             ref.putFile(picUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -163,15 +170,16 @@ public class UpdateProfileActivity extends AppCompatActivity {
         }
     }
     private void saveUserData(){
+        String id = SessionManagement.getUserId();
         String name = binding.etName.getText().toString();
         String bio = binding.etBio.getText().toString();
         String phoneNo = SessionManagement.getUserPhoneNo();
         String photoUri = SessionManagement.getUserPic();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User").child(phoneNo);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User").child(SessionManagement.getUserId());
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                UserModel model = new UserModel(name,bio,phoneNo,photoUri);
+                UserModel model = new UserModel(id,name,bio,phoneNo,photoUri);
                 reference.setValue(model);
                 Toast.makeText(getApplicationContext(), "Profile updated Successfully!", Toast.LENGTH_SHORT).show();
             }

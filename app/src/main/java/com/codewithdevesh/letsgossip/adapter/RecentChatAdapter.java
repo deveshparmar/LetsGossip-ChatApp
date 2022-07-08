@@ -16,6 +16,7 @@ import com.codewithdevesh.letsgossip.R;
 import com.codewithdevesh.letsgossip.activities.ChatActivity;
 import com.codewithdevesh.letsgossip.model.ChatModel;
 import com.codewithdevesh.letsgossip.model.RecentChatModel;
+import com.codewithdevesh.letsgossip.security.AES;
 import com.codewithdevesh.letsgossip.utilities.SessionManagement;
 import com.facebook.shimmer.Shimmer;
 import com.facebook.shimmer.ShimmerDrawable;
@@ -65,7 +66,7 @@ public class RecentChatAdapter extends RecyclerView.Adapter<RecentChatAdapter.Vi
         ShimmerDrawable shimmerDrawable = new ShimmerDrawable();
         shimmerDrawable.setShimmer(shimmer);
         holder.name.setText(model.getName());
-        holder.textMsg.setText(model.getLastMessage());
+        holder.textMsg.setText(AES.decrypt(model.getLastMessage(),"devesh1403"));
         holder.time.setText(model.getTime());
         holder.date.setText(model.getDate());
         Glide.with(context).load(model.getProfile()).placeholder(shimmerDrawable).into(holder.imageView);

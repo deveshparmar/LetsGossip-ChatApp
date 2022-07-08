@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<RelativeLayout
     android:layout_width="match_parent"
     android:background="@color/light_background"
     android:layout_height="match_parent"
@@ -39,7 +40,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/ubuntu_b"
-                    android:text="James Morgan"
                     android:textColor="@color/text_color"
                     android:textSize="24sp" />
 
@@ -48,10 +48,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/ubuntu_r"
-                    android:text="idk"
                     android:textColor="@color/text_color"
                     android:textSize="16sp" />
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/ic_m_phone" />
 
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
@@ -89,6 +97,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
         app:cardCornerRadius="20dp"
+        app:cardBackgroundColor="@color/white"
         android:layout_marginBottom="2dp"
         android:layout_weight="1">
         <LinearLayout
@@ -99,10 +108,10 @@
             <ImageButton
                 android:id="@+id/attach"
                 android:layout_width="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:padding="10dp"
-                android:background="@drawable/nobackground"
                 android:src="@drawable/ic_baseline_attach_file_24"
                 app:tint="@color/text_color" />
         <EditText
@@ -113,13 +122,14 @@
             android:imeOptions="actionSend"
             android:inputType="textCapSentences|textMultiLine"
             android:maxLines="3"
+            android:textColorHint="@color/text_color"
             android:paddingStart="20dp"
             android:paddingEnd="10dp"
             android:fontFamily="@font/ubuntu_r"
             android:textColor="@color/text_color"
             android:textSize="16sp"
             android:layout_gravity="center"
-            android:background="@drawable/nobackground"/>
+            android:background="@color/white"/>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

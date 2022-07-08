@@ -13,10 +13,6 @@ import android.view.ViewGroup;
 import com.codewithdevesh.letsgossip.R;
 import com.codewithdevesh.letsgossip.databinding.FragmentCallBinding;
 
-import java.util.ArrayList;
-
-import xute.storyview.StoryModel;
-
 
 public class CallFragment extends Fragment {
 

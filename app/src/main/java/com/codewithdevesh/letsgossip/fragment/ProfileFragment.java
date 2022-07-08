@@ -1,5 +1,7 @@
 package com.codewithdevesh.letsgossip.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,9 +17,12 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.codewithdevesh.letsgossip.R;
+import com.codewithdevesh.letsgossip.activities.LoginActivity;
 import com.codewithdevesh.letsgossip.activities.UpdateProfileActivity;
 import com.codewithdevesh.letsgossip.databinding.FragmentProfileBinding;
 import com.codewithdevesh.letsgossip.utilities.SessionManagement;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
@@ -34,7 +39,7 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         SessionManagement.init(getActivity());
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_profile, container, false);
-        Glide.with(getActivity()).load(SessionManagement.getUserPic()).into(binding.profileImg);
+        Glide.with(getActivity()).load(SessionManagement.getUserPic()).placeholder(R.drawable.user).into(binding.profileImg);
         binding.tvBio.setText(SessionManagement.getUserBio());
         binding.tvName.setText(SessionManagement.getUserName());
         binding.tvPhone.setText(SessionManagement.getUserPhoneNo());
@@ -56,6 +61,38 @@ public class ProfileFragment extends Fragment {
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), UpdateProfileActivity.class));
                 requireActivity().overridePendingTransition(R.anim.slide_in_right,R.anim.stay);
+            }
+        });
+        binding.bttnSignout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("Do you really want to Sign out?");
+                builder.setTitle("Sign Out");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        FirebaseAuth.getInstance().signOut();
+                        SessionManagement.saveUserId("");
+                        SessionManagement.saveUserBio("");
+                        SessionManagement.saveUserName("");
+                        SessionManagement.saveUserPhoneNo("");
+                        SessionManagement.saveUserPic("");
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
+                        requireActivity().overridePendingTransition(R.anim.slide_in_left,R.anim.stay);
+                        requireActivity().finish();
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
+
             }
         });
         return binding.getRoot();

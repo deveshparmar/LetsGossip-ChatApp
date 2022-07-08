@@ -1,5 +1,6 @@
 package com.codewithdevesh.letsgossip.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
@@ -11,6 +12,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -22,6 +25,8 @@ import com.codewithdevesh.letsgossip.databinding.ActivityContactBinding;
 import com.codewithdevesh.letsgossip.model.RecentChatModel;
 import com.codewithdevesh.letsgossip.model.UserModel;
 import com.codewithdevesh.letsgossip.utilities.SessionManagement;
+import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -48,7 +53,7 @@ public class ContactActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_contact);
         SessionManagement.init(ContactActivity.this);
         user = FirebaseAuth.getInstance().getCurrentUser();
-        binding.ivBack.setOnClickListener(new View.OnClickListener() {
+        binding.tb.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
@@ -62,16 +67,20 @@ public class ContactActivity extends AppCompatActivity {
         if(mobileContactList!=null){
             getContactList();
         }
-        binding.sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        binding.etSearchview.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
             }
 
             @Override
-            public boolean onQueryTextChange(String s) {
-                filter(s);
-                return false;
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                filter(editable.toString());
             }
         });
 
@@ -92,6 +101,10 @@ public class ContactActivity extends AppCompatActivity {
                             binding.shimmerLayoutC.setVisibility(View.GONE);
                             list.add(model);
                         }
+                    }else{
+                        binding.shimmerLayoutC.stopShimmer();
+                        binding.shimmerLayoutC.setVisibility(View.GONE);
+                        binding.tvOops.setVisibility(View.VISIBLE);
                     }
 
                }
@@ -100,6 +113,11 @@ public class ContactActivity extends AppCompatActivity {
                binding.rvContactList.setHasFixedSize(true);
                binding.rvContactList.setLayoutManager(new LinearLayoutManager(ContactActivity.this));
                adapter.notifyDataSetChanged();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
             }
         });
     }
@@ -197,7 +215,7 @@ public class ContactActivity extends AppCompatActivity {
             }
         }
         if(filterList.isEmpty()){
-            Toast.makeText(this, "No Data Found..", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "No Data Found..", Toast.LENGTH_SHORT).show();
         }else{
             adapter.filterList(filterList);
         }

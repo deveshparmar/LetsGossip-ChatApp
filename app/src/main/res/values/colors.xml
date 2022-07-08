@@ -8,7 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="light_background">#ecf0f3</color>
-    <color name="card_bg">#cdd7df</color>
+    <color name="card_bg">#f5f5f5</color>
     <color name="text_color">#003366</color>
 
 </resources>

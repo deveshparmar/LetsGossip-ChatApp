@@ -107,7 +107,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             @Override
             public void onClick(View view) {
                 context.startActivity(new Intent(context, ChatActivity.class)
-                .putExtra("userId",model.getPhoneNo())
+                .putExtra("userId",model.getId())
                 .putExtra("userName",model.getName())
                 .putExtra("userProfilePic",model.getPhotoUri()));
             }

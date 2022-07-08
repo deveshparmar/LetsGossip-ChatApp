@@ -47,10 +47,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.vanniktech.emoji.EmojiManager;
-import com.vanniktech.emoji.EmojiPopup;
-import com.vanniktech.emoji.google.GoogleEmojiProvider;
-
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -144,7 +140,7 @@ public class ChatActivity extends AppCompatActivity {
                     list.clear();
                     for (DataSnapshot ds1 : snapshot.getChildren()) {
                         ChatModel chatModel = ds1.getValue(ChatModel.class);
-                        if (chatModel != null && chatModel.getSender().equals(SessionManagement.getUserPhoneNo()) && chatModel.getReceiver().equals(receiverId) || chatModel.getReceiver().equals(SessionManagement.getUserPhoneNo()) && chatModel.getSender().equals(receiverId)) {
+                        if (chatModel != null && chatModel.getSender().equals(SessionManagement.getUserId()) && chatModel.getReceiver().equals(receiverId) || chatModel.getReceiver().equals(SessionManagement.getUserId()) && chatModel.getSender().equals(receiverId)) {
                             list.add(chatModel);
                         }
                     }
@@ -168,7 +164,6 @@ public class ChatActivity extends AppCompatActivity {
 
     private void listeners() {
         binding.fabSend.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
                 if (!TextUtils.isEmpty(binding.etMessage.getText().toString())) {
@@ -179,8 +174,9 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
     private void sendMessage(String msg,String type,String url) {
+        String encryptedMsg = AES.encrypt(msg,"devesh1403");
         Date date = Calendar.getInstance().getTime();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         String currentDay = dateFormat.format(date);
@@ -189,9 +185,9 @@ public class ChatActivity extends AppCompatActivity {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
         String currentTime = timeFormat.format(current.getTime());
 
-        ChatModel model = new ChatModel(SessionManagement.getUserPhoneNo(), receiverId, type, url, msg, currentDay + "," + currentTime);
-        RecentChatModel model1 = new RecentChatModel(msg,currentDay,currentTime,receiverName,receiverPic,receiverId);
-        RecentChatModel model2 = new RecentChatModel(msg,currentDay,currentTime,SessionManagement.getUserName(),SessionManagement.getUserPic(),SessionManagement.getUserPhoneNo());
+        ChatModel model = new ChatModel(SessionManagement.getUserId(), receiverId, type, url, encryptedMsg, currentDay + "," + currentTime);
+        RecentChatModel model1 = new RecentChatModel(encryptedMsg,currentDay,currentTime,receiverName,receiverPic,receiverId);
+        RecentChatModel model2 = new RecentChatModel(encryptedMsg,currentDay,currentTime,SessionManagement.getUserName(),SessionManagement.getUserPic(),SessionManagement.getUserId());
         reference.child("Chats").push().setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
@@ -205,7 +201,7 @@ public class ChatActivity extends AppCompatActivity {
         });
 
 
-        DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("RecentChat").child(SessionManagement.getUserPhoneNo()).child(receiverId);
+        DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("RecentChat").child(SessionManagement.getUserId()).child(receiverId);
         ref1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -218,7 +214,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("RecentChat").child(receiverId).child(SessionManagement.getUserPhoneNo());
+        DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("RecentChat").child(receiverId).child(SessionManagement.getUserId());
         ref2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -231,15 +227,15 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("ChatList").child(SessionManagement.getUserPhoneNo()).child(receiverId);
-        reference1.child("chatId").setValue(receiverId);
-        DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference("ChatList").child(receiverId).child(SessionManagement.getUserPhoneNo());
-        reference2.child("chatId").setValue(SessionManagement.getUserPhoneNo());
-
-        DatabaseReference reference3 = FirebaseDatabase.getInstance().getReference("LastMessage").child(SessionManagement.getUserPhoneNo()).child(receiverId);
-        reference3.child("Message").setValue(msg);
-        DatabaseReference reference4 = FirebaseDatabase.getInstance().getReference("LastMessage").child(receiverId).child(SessionManagement.getUserPhoneNo());
-        reference4.child("Message").setValue(msg);
+//        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("ChatList").child(SessionManagement.getUserId()).child(receiverId);
+//        reference1.child("chatId").setValue(receiverId);
+//        DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference("ChatList").child(receiverId).child(SessionManagement.getUserId());
+//        reference2.child("chatId").setValue(SessionManagement.getUserId());
+//
+//        DatabaseReference reference3 = FirebaseDatabase.getInstance().getReference("LastMessage").child(SessionManagement.getUserId()).child(receiverId);
+//        reference3.child("Message").setValue(msg);
+//        DatabaseReference reference4 = FirebaseDatabase.getInstance().getReference("LastMessage").child(receiverId).child(SessionManagement.getUserId());
+//        reference4.child("Message").setValue(msg);
 
 
     }
@@ -274,7 +270,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void getConnectionStatus(String status) {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("UserStatus").child(SessionManagement.getUserPhoneNo());
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("UserStatus").child(SessionManagement.getUserId());
         reference.child("status").setValue(status);
 
     }
@@ -323,10 +319,10 @@ public class ChatActivity extends AppCompatActivity {
     }
     private void setTypingStatus(String typing){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-        reference.child("Status").child(SessionManagement.getUserPhoneNo()).child(receiverId).child("isTyping").setValue(typing);
+        reference.child("Status").child(SessionManagement.getUserId()).child(receiverId).child("isTyping").setValue(typing);
     }
     private void getTypingStatus(){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Status").child(receiverId).child(SessionManagement.getUserPhoneNo());
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Status").child(receiverId).child(SessionManagement.getUserId());
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -401,7 +397,6 @@ public class ChatActivity extends AppCompatActivity {
         byte[] bytes = stream.toByteArray();
         StorageReference ref = FirebaseStorage.getInstance().getReference().child(path);
         ref.putBytes(bytes).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 dialog.dismiss();

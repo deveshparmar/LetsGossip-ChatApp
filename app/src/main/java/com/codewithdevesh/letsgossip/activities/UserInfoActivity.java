@@ -29,6 +29,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -156,11 +158,16 @@ public class UserInfoActivity extends AppCompatActivity {
         String bio = SessionManagement.getUserBio();
         String phoneNo = SessionManagement.getUserPhoneNo();
         String photoUri = SessionManagement.getUserPic();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User").child(phoneNo);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user!=null) {
+            SessionManagement.saveUserId(user.getUid());
+        }
+        String id = SessionManagement.getUserId();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User").child(id);
             reference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    UserModel model = new UserModel(name,bio,phoneNo,photoUri);
+                    UserModel model = new UserModel(name,bio,phoneNo,photoUri,id);
                     reference.setValue(model);
                     Toast.makeText(getApplicationContext(), "Profile details saved!", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(getApplicationContext(), HomeActivity.class));

@@ -9,6 +9,8 @@
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/drawable/ic_logo.xml" value="0.24427083333333333" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/drawable/nobackground.xml" value="0.128125" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/drawable/receive_drawable.xml" value="0.2484375" />
+        <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/drawable/ripple.xml" value="0.142" />
+        <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/drawable/ripple_bg.xml" value="0.1" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/drawable/rounded.xml" value="0.12864583333333332" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/drawable/send_drawable.xml" value="0.2484375" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/activity_chat.xml" value="0.1913214990138067" />
@@ -17,6 +19,7 @@
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/activity_stories.xml" value="0.136" />
+        <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/activity_story.xml" value="0.23125" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/activity_update_profile.xml" value="0.2" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/activity_user_info.xml" value="0.264" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/activity_welcome.xml" value="0.2" />
@@ -30,7 +33,7 @@
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/layout_contact.xml" value="0.264" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/layout_recent_chat.xml" value="0.2" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/layout_status.xml" value="0.264" />
-        <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/receive_layout.xml" value="0.2" />
+        <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/receive_layout.xml" value="0.264" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/send_layout.xml" value="0.264" />
       </map>
     </option>

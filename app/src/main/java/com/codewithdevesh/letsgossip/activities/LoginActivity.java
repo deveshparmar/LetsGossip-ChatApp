@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.codewithdevesh.letsgossip.R;
 import com.codewithdevesh.letsgossip.model.UserModel;
+import com.codewithdevesh.letsgossip.security.AES;
 import com.codewithdevesh.letsgossip.utilities.SessionManagement;
 import com.codewithdevesh.letsgossip.utilities.Utils;
 import com.codewithdevesh.letsgossip.databinding.ActivityLoginBinding;
@@ -198,8 +199,10 @@ public class LoginActivity extends AppCompatActivity {
                             progressDialog.dismiss();
                             Log.e("TAG","phone num"+ phoneNo);
                             SessionManagement.saveUserPhoneNo(phoneNo);
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            SessionManagement.saveUserId(user.getUid());
                             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User");
-                            reference.child(phoneNo).addListenerForSingleValueEvent(new ValueEventListener() {
+                            reference.child(SessionManagement.getUserId()).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     if(snapshot.exists()) {
@@ -208,11 +211,13 @@ public class LoginActivity extends AppCompatActivity {
                                         String name = model.getName();
                                         String bio = model.getBio();
                                         String pic = model.getPhotoUri();
+                                        String id = model.getId();
 
                                         SessionManagement.saveUserPhoneNo(num);
                                         SessionManagement.saveUserName(name);
                                         SessionManagement.saveUserBio(bio);
                                         SessionManagement.saveUserPic(pic);
+                                        SessionManagement.saveUserId(id);
 
                                         startActivity(new Intent(LoginActivity.this,HomeActivity.class));
                                     }else{

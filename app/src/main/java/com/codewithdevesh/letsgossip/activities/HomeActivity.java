@@ -75,6 +75,7 @@ import java.io.IOException;
         Log.e("TAG","name" + SessionManagement.getUserName());
         Log.e("TAG","bio" + SessionManagement.getUserBio());
         Log.e("TAG","pic" + SessionManagement.getUserPic());
+        Log.e("TAG","id" + SessionManagement.getUserId());
 
     }
 
@@ -90,7 +91,7 @@ import java.io.IOException;
 
      }
      private void getConnectionStatus(String status){
-         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("UserStatus").child(SessionManagement.getUserPhoneNo());
+         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("UserStatus").child(SessionManagement.getUserId());
          reference.child("status").setValue(status);
 
      }

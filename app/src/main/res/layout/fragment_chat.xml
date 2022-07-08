@@ -21,45 +21,59 @@
           android:visibility="gone"
          android:layout_centerInParent="true"/>
 
-      <TextView
-          android:id="@+id/tv_msg"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_centerHorizontal="true"
-          android:layout_marginTop="20dp"
-          android:fontFamily="@font/ubuntumono_b"
-          android:text="Messages"
-          android:textColor="@color/text_color"
-          android:textSize="30sp"/>
+      <androidx.appcompat.widget.Toolbar
+          android:id="@+id/tb"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+
+         <TextView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center"
+             android:fontFamily="@font/ubuntu_b"
+             android:text="Messages"
+             android:textColor="@color/text_color"
+             android:textSize="24sp" />
+      </androidx.appcompat.widget.Toolbar>
 
       <soup.neumorphism.NeumorphCardView
           android:id="@+id/cv"
-          style="@style/Widget.Neumorph.CardView"
           android:layout_width="match_parent"
           android:layout_height="80dp"
-          android:layout_below="@id/tv_msg"
+          style="@style/Widget.Neumorph.CardView"
+          android:layout_below="@id/tb"
           android:layout_marginStart="10dp"
-          android:layout_marginTop="8dp"
           android:layout_marginEnd="10dp"
           app:neumorph_shapeType="pressed">
          <LinearLayout
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:orientation="horizontal">
+            android:orientation="horizontal">
+         <ImageView
+             android:layout_width="32dp"
+             android:layout_height="32dp"
+            android:src="@drawable/ic_baseline_search_24"
+             android:layout_gravity="center"
+             android:layout_marginStart="20dp"
+             app:tint="@color/text_color"
+             android:contentDescription="search" />
 
-            <SearchView
-                android:id="@+id/sv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/nobackground"
-                android:fontFamily="@font/ubuntu_r"
-                app:queryHint="Search Chats here"
-                android:inputType="textPersonName"
-                android:paddingStart="15dp"
-                android:layout_weight="1"
-                android:paddingEnd="15dp"
-                android:textCursorDrawable="@drawable/cursor" />
-
+         <EditText
+             android:id="@+id/et_searchview"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:inputType="text"
+             android:textColor="@color/text_color"
+             android:textColorHint="@color/text_color"
+             android:fontFamily="@font/ubuntu_r"
+             android:hint="Search here"
+             android:layout_marginEnd="25dp"
+             android:textCursorDrawable="@drawable/cursor"
+             android:paddingStart="15dp"
+             android:paddingEnd="15dp"
+             android:maxLength="10"
+             android:background="@drawable/nobackground"
+             android:importantForAutofill="no" />
          </LinearLayout>
       </soup.neumorphism.NeumorphCardView>
 
@@ -100,6 +114,18 @@
          </LinearLayout>
 
       </com.facebook.shimmer.ShimmerFrameLayout>
+
+      <TextView
+          android:id="@+id/tv_oops"
+          android:visibility="gone"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+         android:textAlignment="center"
+         android:textColor="@color/text_color"
+         android:textSize="18sp"
+          android:fontFamily="@font/ubuntu_m"
+          android:layout_centerInParent="true"
+         android:text="No Recent Chats found!,\n Start chatting with your family and friends\n by clicking '+' button"/>
 
       <com.google.android.material.floatingactionbutton.FloatingActionButton
           android:id="@+id/fab_contact"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -21,7 +21,7 @@
            android:fontFamily="@font/ubuntumono_b"
            android:text="Profile"
            android:textColor="@color/text_color"
-           android:textSize="30sp"/>
+           android:textSize="30sp" />
 
        <de.hdodenhof.circleimageview.CircleImageView
            android:id="@+id/profileImg"
@@ -29,8 +29,8 @@
            android:layout_height="150dp"
            android:layout_below="@id/tv_msg"
            android:layout_centerHorizontal="true"
-           android:elevation="10dp"
            android:layout_marginTop="20dp"
+           android:elevation="10dp"
            android:src="@drawable/user" />
 
        <androidx.cardview.widget.CardView
@@ -74,13 +74,13 @@
                    android:id="@+id/tv_bio"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:layout_centerHorizontal="true"
                    android:layout_below="@id/tv_phone"
+                   android:layout_centerHorizontal="true"
                    android:layout_marginTop="20dp"
                    android:fontFamily="@font/ubuntu_m"
                    android:text="Hustle!"
                    android:textColor="@color/text_color"
-                   android:textSize="20sp"/>
+                   android:textSize="16sp" />
 
 
            </RelativeLayout>
@@ -125,18 +125,32 @@
            android:layout_marginEnd="30dp"
            android:textColor="@color/text_color" />
 
+       <soup.neumorphism.NeumorphButton
+           android:id="@+id/bttn_signout"
+           style="@style/Widget.Neumorph.Button"
+           android:layout_width="200dp"
+           android:layout_height="80dp"
+           android:layout_below="@id/bttn_invite"
+           android:layout_centerHorizontal="true"
+           android:layout_marginStart="30dp"
+           android:layout_marginTop="15dp"
+           android:layout_marginEnd="30dp"
+           android:text="Sign out"
+           android:textColor="@color/text_color" />
+
        <TextView
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:text="Made with ❤ by Devesh"
            android:textSize="14sp"
-           android:layout_alignParentBottom="true"
+           android:layout_below="@id/bttn_signout"
            android:layout_centerHorizontal="true"
            android:layout_marginBottom="20dp"
+           android:layout_marginTop="15dp"
            android:textColor="@color/black"
            android:fontFamily="@font/ubuntu_b"/>
 
    </RelativeLayout>
 
-</FrameLayout>
+</ScrollView>
 </layout>

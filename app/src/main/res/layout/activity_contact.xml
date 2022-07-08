@@ -17,51 +17,61 @@
         app:SpinKit_Color="@color/text_color"
         android:layout_centerInParent="true"/>
 
-    <ImageView
-        android:id="@+id/iv_back"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_margin="10dp"
-        android:layout_alignParentStart="true"
-        android:src="@drawable/ic_baseline_arrow_back_24"/>
-
-    <TextView
-        android:id="@+id/tv_msg"
-        android:layout_width="wrap_content"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/ubuntumono_b"
-        android:text="Contacts"
-        android:textColor="@color/text_color"
-        android:textSize="30sp" />
+        app:navigationIcon="@drawable/ic_baseline_arrow_back_24">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/ubuntu_b"
+            android:text="Contacts"
+            android:textColor="@color/text_color"
+            android:textSize="24sp" />
+    </androidx.appcompat.widget.Toolbar>
+
 
         <soup.neumorphism.NeumorphCardView
             android:id="@+id/cv"
             style="@style/Widget.Neumorph.CardView"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:layout_below="@id/tv_msg"
+            android:layout_below="@id/tb"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="10dp"
             app:neumorph_shapeType="pressed">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
-                <SearchView
-                    android:id="@+id/sv"
-                    android:layout_width="0dp"
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_baseline_search_24"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    app:tint="@color/text_color"
+                    android:contentDescription="search" />
+
+                <EditText
+                    android:id="@+id/et_searchview"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/nobackground"
+                    android:inputType="text"
+                    android:textColor="@color/text_color"
+                    android:textColorHint="@color/text_color"
                     android:fontFamily="@font/ubuntu_r"
-                    android:queryHint="Search here"
-                    android:inputType="textPersonName"
+                    android:hint="Search here"
+                    android:layout_marginEnd="25dp"
+                    android:textCursorDrawable="@drawable/cursor"
                     android:paddingStart="15dp"
-                    android:layout_weight="1"
                     android:paddingEnd="15dp"
-                    android:textCursorDrawable="@drawable/cursor" />
+                    android:maxLength="10"
+                    android:background="@drawable/nobackground"
+                    android:importantForAutofill="no" />
 
             </LinearLayout>
         </soup.neumorphism.NeumorphCardView>
@@ -102,7 +112,17 @@
         </LinearLayout>
 
     </com.facebook.shimmer.ShimmerFrameLayout>
-
+    <TextView
+        android:id="@+id/tv_oops"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textColor="@color/text_color"
+        android:textSize="18sp"
+        android:visibility="gone"
+        android:fontFamily="@font/ubuntu_m"
+        android:layout_centerInParent="true"
+        android:text="No Contacts found!,\n Start chatting with your family and friends\n by inviting them"/>
 
 
 </RelativeLayout>

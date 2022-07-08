@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:padding="5dp"
     android:layout_marginStart="10dp"
-    android:layout_marginEnd="120dp"
+    android:layout_marginEnd="150dp"
     android:gravity="start"
     android:layout_marginBottom="10dp">
 
@@ -18,39 +18,54 @@
         android:paddingTop="8dp"
         android:paddingEnd="15dp"
         android:paddingBottom="8dp"
-        android:text="Hi whatsup! how r u"
+        android:text="Hi"
         android:textColor="@color/white"
         android:textSize="16sp" />
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:adjustViewBounds="true"
-        android:paddingStart="20dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="8dp"
-        android:scaleType="centerCrop" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Seen"
-        android:visibility="gone"
-        android:textSize="13sp"
-        android:textColor="@color/text_color"
-        android:fontFamily="@font/ubuntu_m"
-        android:layout_below="@id/tv_message"
-        android:layout_alignStart="@id/tv_message"/>
+    <RelativeLayout
+        android:id="@+id/rl"
+        android:layout_width="255dp"
+        android:layout_height="255dp"
+        android:background="@drawable/receive_drawable">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="8dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="pic"
+            android:scaleType="centerCrop"
+            android:src="@drawable/oops" />
+
+    </RelativeLayout>
+
 
     <TextView
-        android:id="@+id/dateTime"
-        android:layout_width="match_parent"
+        android:id="@+id/dateTime_text"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_message"
         android:layout_alignEnd="@id/tv_message"
         android:fontFamily="@font/ubuntu_m"
         android:gravity="start"
+        android:maxLines="2"
         android:text="12 january 2015"
         android:textColor="@color/text_color"
         android:textSize="12sp" />
+    <TextView
+        android:id="@+id/dateTime_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl"
+        android:layout_alignEnd="@id/tv_message"
+        android:fontFamily="@font/ubuntu_m"
+        android:gravity="start"
+        android:maxLines="2"
+        android:text="12 january 2015"
+        android:textColor="@color/text_color"
+        android:textSize="12sp" />
+
 </RelativeLayout>

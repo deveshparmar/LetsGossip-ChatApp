@@ -45,4 +45,13 @@ public class SessionManagement {
     public static String getUserPic(){
         return sharedPreferences.getString("UserPic","");
     }
+
+    public static void saveUserId(String id){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("UserId",id);
+        editor.apply();
+    }
+    public static String getUserId(){
+        return sharedPreferences.getString("UserId","");
+    }
 }

@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="5dp"
     android:layout_marginStart="10dp"
     android:layout_marginEnd="150dp"
@@ -41,7 +42,26 @@
             android:src="@drawable/oops" />
 
     </RelativeLayout>
-
+    <me.jagar.chatvoiceplayerlibrary.VoicePlayerView
+        android:id="@+id/voicePlayerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:enableVisualizer="true"
+        app:playPauseBackgroundColor="@color/text_color"
+        app:playPauseCornerRadius="100"
+        app:playProgressbarColor="@color/text_color"
+        app:progressTimeColor="@color/black"
+        app:seekBarProgressColor="@color/text_color"
+        app:seekBarThumbColor="@color/white"
+        app:shareBackgroundColor="@color/text_color"
+        app:shareCornerRadius="100"
+        app:shareText="SHARE ME"
+        app:showTiming="true"
+        app:timingBackgroundColor="@color/white"
+        app:viewBackground="@color/card_bg"
+        app:viewCornerRadius="100"
+        app:visualizationNotPlayedColor="@color/text_color"
+        app:visualizationPlayedColor="@color/text_color" />
 
     <TextView
         android:id="@+id/dateTime_text"
@@ -61,6 +81,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl"
         android:layout_alignEnd="@id/tv_message"
+        android:fontFamily="@font/ubuntu_m"
+        android:gravity="start"
+        android:maxLines="2"
+        android:text="12 january 2015"
+        android:textColor="@color/text_color"
+        android:textSize="12sp" />
+    <TextView
+        android:id="@+id/dateTime_record"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/voicePlayerView"
         android:fontFamily="@font/ubuntu_m"
         android:gravity="start"
         android:maxLines="2"

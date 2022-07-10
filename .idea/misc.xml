@@ -3,9 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/91851/.gradle/caches/transforms-3/6291f5bc18c0c8ae6a36af567545e163/transformed/jetified-RecordView-3.1.1/res/drawable/recv_bg_mic.xml" value="0.1235" />
+        <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/drawable/bg_mic.xml" value="0.2375" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/drawable/circle_sh.xml" value="0.1" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/drawable/cursor.xml" value="0.125" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.2484375" />
+        <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/drawable/ic_baseline_send_24.xml" value="0.2385" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/drawable/ic_logo.xml" value="0.24427083333333333" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/drawable/nobackground.xml" value="0.128125" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/drawable/receive_drawable.xml" value="0.2484375" />
@@ -33,6 +36,7 @@
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/layout_contact.xml" value="0.264" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/layout_recent_chat.xml" value="0.2" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/layout_status.xml" value="0.264" />
+        <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/receive_audio_layout.xml" value="0.264" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/receive_layout.xml" value="0.264" />
         <entry key="..\:/Users/91851/OneDrive/Desktop/Android Dev/LetsGossip/app/src/main/res/layout/send_layout.xml" value="0.264" />
       </map>

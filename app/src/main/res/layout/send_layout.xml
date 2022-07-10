@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginStart="150dp"
     android:layout_marginEnd="10dp"
     android:layout_marginBottom="10dp"
@@ -33,16 +34,37 @@
             android:id="@+id/image"
             android:layout_width="250dp"
             android:layout_height="250dp"
-            android:adjustViewBounds="true"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:layout_marginStart="5dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="5dp"
-            android:src="@drawable/oops"
+            android:layout_marginBottom="8dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="pic"
             android:scaleType="centerCrop"
-            android:contentDescription="pic" />
+            android:src="@drawable/oops" />
 
     </RelativeLayout>
+
+    <me.jagar.chatvoiceplayerlibrary.VoicePlayerView
+        android:id="@+id/voicePlayerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:enableVisualizer="true"
+        app:playPauseBackgroundColor="@color/text_color"
+        app:playPauseCornerRadius="100"
+        app:playProgressbarColor="@color/text_color"
+        app:progressTimeColor="@color/black"
+        app:seekBarProgressColor="@color/text_color"
+        app:seekBarThumbColor="@color/text_color"
+        app:shareBackgroundColor="@color/text_color"
+        app:shareCornerRadius="100"
+        app:shareText="SHARE ME"
+        app:showTiming="true"
+        app:timingBackgroundColor="@color/white"
+        app:viewBackground="@color/card_bg"
+        app:viewCornerRadius="100"
+        app:visualizationNotPlayedColor="@color/text_color"
+        app:visualizationPlayedColor="@color/text_color" />
 
     <TextView
         android:id="@+id/dateTime_text"
@@ -61,6 +83,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl"
+        android:fontFamily="@font/ubuntu_m"
+        android:gravity="end"
+        android:maxLines="2"
+        android:text="12 january 2015"
+        android:textColor="@color/text_color"
+        android:textSize="12sp" />
+    <TextView
+        android:id="@+id/dateTime_record"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/voicePlayerView"
         android:fontFamily="@font/ubuntu_m"
         android:gravity="end"
         android:maxLines="2"

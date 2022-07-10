@@ -1,9 +1,15 @@
 package com.codewithdevesh.letsgossip.activities;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static android.os.Build.VERSION.SDK_INT;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -11,12 +17,16 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -33,6 +43,8 @@ import com.codewithdevesh.letsgossip.model.RecentChatModel;
 import com.codewithdevesh.letsgossip.security.AES;
 import com.codewithdevesh.letsgossip.utilities.SessionManagement;
 import com.codewithdevesh.letsgossip.utilities.Utils;
+import com.devlomi.record_view.OnRecordListener;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -49,6 +61,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,7 +76,8 @@ public class ChatActivity extends AppCompatActivity {
     private DatabaseReference reference;
     private ChatAdapter adapter;
     private List<ChatModel> list;
-    private String typing;
+    private MediaRecorder mediaRecorder;
+    private String typing,audioPath;
     private String userCurrentStatus;
     private Handler handler = new Handler();
     String[] cameraPermission;
@@ -78,44 +92,13 @@ public class ChatActivity extends AppCompatActivity {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference();
         binding = DataBindingUtil.setContentView(this, R.layout.activity_chat);
-        cameraPermission = new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        cameraPermission = new String[]{Manifest.permission.CAMERA, WRITE_EXTERNAL_STORAGE};
+        storagePermission = new String[]{WRITE_EXTERNAL_STORAGE};
         Intent i = getIntent();
         receiverId = i.getStringExtra("userId");
         receiverName = i.getStringExtra("userName");
         receiverPic = i.getStringExtra("userProfilePic");
         getDetails();
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                getTypingStatus();
-                getUserStatus();
-            }
-        });
-        binding.etMessage.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (TextUtils.isEmpty(binding.etMessage.getText().toString()) || binding.etMessage.getText().toString().trim().length() == 0) {
-                    binding.fabSend.setEnabled(false);
-                    setTypingStatus("not");
-                    typing="not";
-                } else {
-                    binding.fabSend.setEnabled(true);
-                    setTypingStatus("typing...");
-                    typing="typing...";
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
         listeners();
         list = new ArrayList<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -128,6 +111,19 @@ public class ChatActivity extends AppCompatActivity {
                 showBottomSheetDialog();
             }
         });
+    }
+
+    private void setUpRecording() {
+        mediaRecorder = new MediaRecorder();
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"LetsGossip/Media/Recording");
+        if(!file.exists()){
+            file.mkdirs();
+        }
+        audioPath = file.getAbsolutePath()+File.separator+System.currentTimeMillis()+".3gp";
+        mediaRecorder.setOutputFile(audioPath);
     }
 
     private void readChats() {
@@ -172,6 +168,102 @@ public class ChatActivity extends AppCompatActivity {
                 binding.etMessage.setText("");
             }
         });
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                getTypingStatus();
+                getUserStatus();
+            }
+        });
+        binding.etMessage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (TextUtils.isEmpty(binding.etMessage.getText().toString()) || binding.etMessage.getText().toString().trim().length() == 0) {
+                    binding.fabSend.setEnabled(false);
+                    binding.fabSend.setVisibility(View.GONE);
+                    binding.btRec.setVisibility(View.VISIBLE);
+                    setTypingStatus("not");
+                    typing="not";
+                } else {
+                    binding.fabSend.setEnabled(true);
+                    binding.fabSend.setVisibility(View.VISIBLE);
+                    binding.btRec.setVisibility(View.GONE);
+                    setTypingStatus("typing...");
+                    typing="typing...";
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        binding.recordView.setOnRecordListener(new OnRecordListener() {
+            @Override
+            public void onStart() {
+                setUpRecording();
+                try{
+                    mediaRecorder.prepare();
+                    mediaRecorder.start();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                binding.cvMsg.setVisibility(View.GONE);
+                binding.recordView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onCancel() {
+                mediaRecorder.reset();
+                mediaRecorder.release();
+                File file = new File(audioPath);
+                if(file.exists()){
+                    file.delete();
+                }
+                binding.recordView.setVisibility(View.GONE);
+                binding.cvMsg.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onFinish(long recordTime, boolean limitReached) {
+                try {
+                    mediaRecorder.stop();
+                    mediaRecorder.release();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                binding.recordView.setVisibility(View.GONE);
+                binding.cvMsg.setVisibility(View.VISIBLE);
+                    sendRecordingMessage(audioPath);
+            }
+
+            @Override
+            public void onLessThanSecond() {
+                mediaRecorder.reset();
+                mediaRecorder.release();
+                File file = new File(audioPath);
+                if(file.exists()){
+                    file.delete();
+                }
+                binding.recordView.setVisibility(View.GONE);
+                binding.cvMsg.setVisibility(View.VISIBLE);
+                Toast.makeText(ChatActivity.this, "Hold Button to record", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        binding.btRec.setRecordView(binding.recordView);
+        if(ContextCompat.checkSelfPermission(this,Manifest.permission.RECORD_AUDIO)== PackageManager.PERMISSION_GRANTED){
+            binding.btRec.setListenForRecord(true);
+        }else{
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.RECORD_AUDIO},100);
+        }
     }
 
 
@@ -390,7 +482,7 @@ public class ChatActivity extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.show();
         String timeStamp = ""+System.currentTimeMillis();
-        String path = "ChatImages/"+"sent_"+System.currentTimeMillis();
+        String path = "Media/Photos/"+SessionManagement.getUserId()+"/"+"sent_"+System.currentTimeMillis();
         Bitmap bitmap  = MediaStore.Images.Media.getBitmap(this.getContentResolver(),uri);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,100,stream);
@@ -412,6 +504,38 @@ public class ChatActivity extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
                 dialog.dismiss();
                 Toast.makeText(ChatActivity.this, "Failed to send Image", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void sendRecordingMessage(String path){
+        ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setMessage("Sending Audio...");
+        dialog.setCancelable(false);
+        dialog.show();
+        StorageReference reference = FirebaseStorage.getInstance().getReference("Media/Audios/"+SessionManagement.getUserId()+"/"+"sent_"+System.currentTimeMillis());
+        Uri audioFile = Uri.fromFile(new File(audioPath));
+        reference.putFile(audioFile).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                dialog.dismiss();
+                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                uriTask.addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        String downloadUrl = uriTask.getResult().toString();
+                        if(uriTask.isSuccessful()){
+                            sendMessage("Sent an audio","AUDIO",downloadUrl);
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        dialog.dismiss();
+                        Toast.makeText(ChatActivity.this, "Failed to send Image", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }

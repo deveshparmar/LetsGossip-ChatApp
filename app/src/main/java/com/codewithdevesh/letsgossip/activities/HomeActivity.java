@@ -3,17 +3,19 @@
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
-
 import com.codewithdevesh.letsgossip.R;
 import com.codewithdevesh.letsgossip.fragment.CallFragment;
 import com.codewithdevesh.letsgossip.fragment.ChatFragment;
@@ -22,17 +24,10 @@ import com.codewithdevesh.letsgossip.fragment.StatusFragment;
 import com.codewithdevesh.letsgossip.utilities.SessionManagement;
 import com.codewithdevesh.letsgossip.utilities.Utils;
 import com.codewithdevesh.letsgossip.databinding.ActivityHomeBinding;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
-import java.io.IOException;
 
  public class HomeActivity extends AppCompatActivity {
     private ActivityHomeBinding binding;
@@ -112,5 +107,54 @@ import java.io.IOException;
      protected void onResume() {
          super.onResume();
          getConnectionStatus("Online");
+         if(!Utils.isPermissionGranted(this)){
+             new AlertDialog.Builder(this).setTitle("App Permissions")
+                     .setMessage("Due to security purpose ,this app requires permission")
+                     .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
+                         @Override
+                         public void onClick(DialogInterface dialogInterface, int i) {
+                                takePermission();
+                         }
+                     }).setNegativeButton("Deny", new DialogInterface.OnClickListener() {
+                         @Override
+                         public void onClick(DialogInterface dialogInterface, int i) {
+
+                         }
+                     }).show();
+         }
+     }
+
+     private void takePermission() {
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.R) {
+                try {
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                    intent.addCategory("android.intent.category.DEFAULT");
+                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                    intent.setData(uri);
+                    startActivityForResult(intent, 100);
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Intent intent = new Intent();
+                    intent.setAction(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                    startActivityForResult(intent,100);
+                }
+        }else{
+            ActivityCompat.requestPermissions(this,new String[]{
+                    Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE
+            },100);
+        }
+     }
+
+     @Override
+     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+         if(grantResults.length>0){
+             if(requestCode==100){
+                 boolean ext = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                 if(!ext){
+                     takePermission();
+                 }
+             }
+         }
      }
  }

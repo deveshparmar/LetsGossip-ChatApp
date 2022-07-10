@@ -51,5 +51,7 @@ dependencies {
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
     implementation "com.vanniktech:emoji-google:0.8.0"
     implementation 'com.github.OMARIHAMZA:StoryView:1.0.2-alpha'
+    implementation 'com.github.3llomi:RecordView:3.1.1'
+    implementation 'com.github.JagarYousef:ChatVoicePlayer:1.1.0'
 }
 

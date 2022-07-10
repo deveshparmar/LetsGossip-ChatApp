@@ -16,10 +16,10 @@ import com.codewithdevesh.letsgossip.R;
 import com.codewithdevesh.letsgossip.model.ChatModel;
 import com.codewithdevesh.letsgossip.security.AES;
 import com.codewithdevesh.letsgossip.utilities.SessionManagement;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
+
+import me.jagar.chatvoiceplayerlibrary.VoicePlayerView;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     private List<ChatModel>list;
@@ -59,13 +59,26 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             holder.imageView.setVisibility(View.GONE);
             holder.rl.setVisibility(View.GONE);
             holder.dateTime_p.setVisibility(View.GONE);
+            holder.playerView.setVisibility(View.GONE);
+            holder.dateTime_r.setVisibility(View.GONE);
             holder.bind(list.get(position));
         }else if(type.equals("PHOTO")){
             holder.imageView.setVisibility(View.VISIBLE);
             holder.textMsg.setVisibility(View.GONE);
             holder.dateTime_t.setVisibility(View.GONE);
+            holder.playerView.setVisibility(View.GONE);
+            holder.dateTime_r.setVisibility(View.GONE);
             Glide.with(context).load(model.getUrl()).placeholder(R.drawable.user).into(holder.imageView);
             holder.dateTime_p.setText(model.getDateTime());
+        }else if(type.equals("AUDIO")){
+            holder.rl.setVisibility(View.GONE);
+            holder.textMsg.setVisibility(View.GONE);
+            holder.dateTime_p.setVisibility(View.GONE);
+            holder.dateTime_t.setVisibility(View.GONE);
+            holder.playerView.setVisibility(View.VISIBLE);
+            holder.dateTime_r.setVisibility(View.VISIBLE);
+            holder.dateTime_r.setText(model.getDateTime());
+            holder.playerView.setAudio(model.getUrl());
         }
     }
 
@@ -75,16 +88,19 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView textMsg,dateTime_t,dateTime_p;
+        private TextView textMsg,dateTime_t,dateTime_p,dateTime_r;
         private ImageView imageView;
         private RelativeLayout rl;
+        private VoicePlayerView playerView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textMsg = itemView.findViewById(R.id.tv_message);
             dateTime_t = itemView.findViewById(R.id.dateTime_text);
             imageView = itemView.findViewById(R.id.image);
             dateTime_p = itemView.findViewById(R.id.dateTime_photo);
+            dateTime_r = itemView.findViewById(R.id.dateTime_record);
             rl = itemView.findViewById(R.id.rl);
+            playerView = itemView.findViewById(R.id.voicePlayerView);
         }
         void bind(ChatModel chats){
             textMsg.setText(AES.decrypt(chats.getTextMessage(),"devesh1403"));

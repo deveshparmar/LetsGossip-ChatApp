@@ -12,7 +12,8 @@
         android:id="@+id/toolbar_chat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:elevation="10dp"
+        android:layout_alignParentTop="true"
         app:navigationIcon="@drawable/ic_baseline_arrow_back_24">
 
         <RelativeLayout
@@ -79,7 +80,7 @@
         android:id="@+id/rv_chat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/ll"
+        android:layout_above="@id/bt_rec"
         android:layout_below="@+id/toolbar_chat"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp" />
@@ -91,6 +92,7 @@
         android:orientation="horizontal"
         android:layout_alignParentBottom="true">
     <androidx.cardview.widget.CardView
+        android:id="@+id/cv_msg"
         android:layout_width="0dp"
         android:layout_height="50dp"
         app:neumorph_shapeType="flat"
@@ -103,25 +105,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:weightSum="2"
+            android:weightSum="100"
             android:orientation="horizontal">
-            <ImageButton
-                android:id="@+id/attach"
-                android:layout_width="wrap_content"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="10dp"
-                android:src="@drawable/ic_baseline_attach_file_24"
-                app:tint="@color/text_color" />
+
         <EditText
             android:id="@+id/et_message"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:hint="Type here"
             android:imeOptions="actionSend"
             android:inputType="textCapSentences|textMultiLine"
             android:maxLines="3"
+            android:layout_weight="90"
             android:textColorHint="@color/text_color"
             android:paddingStart="20dp"
             android:paddingEnd="10dp"
@@ -129,7 +124,21 @@
             android:textColor="@color/text_color"
             android:textSize="16sp"
             android:layout_gravity="center"
-            android:background="@color/white"/>
+            android:background="@color/white"
+            android:importantForAutofill="no" />
+
+            <ImageButton
+                android:id="@+id/attach"
+                android:layout_weight="10"
+                android:layout_width="0dp"
+                android:background="@drawable/ripple"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="10dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_baseline_attach_file_24"
+                app:tint="@color/text_color"
+                android:contentDescription="attach" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -137,12 +146,36 @@
             android:id="@+id/fab_send"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/Widget.Neumorph.Button"
             android:layout_marginEnd="5dp"
             app:backgroundTint="@color/text_color"
             app:tint="@color/white"
-            android:src="@drawable/ic_baseline_send_24"/>
+            android:src="@drawable/ic_baseline_send_24"
+            android:contentDescription="send" />
     </LinearLayout>
+<com.devlomi.record_view.RecordButton
+    android:id="@+id/bt_rec"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
+    android:layout_alignParentEnd="true"
+    android:layout_alignParentBottom="true"
+    android:scaleType="centerInside"
+    app:mic_icon="@drawable/recv_ic_mic_white"
+    android:background="@drawable/bg_mic"/>
 
+    <com.devlomi.record_view.RecordView
+        android:visibility="gone"
+        android:id="@+id/record_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rv_chat"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:layout_toStartOf="@id/bt_rec"
+        app:counter_time_color="@color/text_color"
+        app:slide_to_cancel_arrow="@drawable/recv_ic_arrow"
+        app:slide_to_cancel_arrow_color="@color/text_color"
+        app:slide_to_cancel_bounds="8dp"
+        app:slide_to_cancel_margin_right="10dp"
+        app:slide_to_cancel_text="Slide to Cancel" />
 </RelativeLayout>
 </layout>

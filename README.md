@@ -6,12 +6,13 @@
 <br>
 2) Basic Chat Features
 <br>
-3) Image Share
+3) Image Sharing
 <br>
 4) Aes Chat Encryption
 <br>
-5) Login functionality With Phone only
+5) Login functionality With Phone number (otp based)
 <br>
 <br>
-
+Database - Firebase
+Cloud Services - Google Cloud
 "More Feautures to be added soon"
